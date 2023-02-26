@@ -23,6 +23,7 @@ export default function App() {
 	const [playerScore, setPlayerScore] = useState(0);
 	const [computerScore, setComputerScore] = useState(0);
 	const [counterDrawing, setCounterDrawing] = useState(0);
+	const [manche, setManche] = useState(0);
 
 	// Images
 	const [image, setImage] = useState(noChoice);
@@ -31,7 +32,7 @@ export default function App() {
 	const [playerImage, setPlayerImage] = useState([]);
 
 	const handleRockSelected = () => {
-		setPlayerImage(images[1]);
+		setPlayerImage(images[0]);
 		setCheckRockMessage('✅');
 		setCheckPaperMessage('❌');
 		setCheckScissorsMessage('❌');
@@ -43,7 +44,7 @@ export default function App() {
 	};
 
 	const handlePaperSelected = () => {
-		setPlayerImage(images[2]);
+		setPlayerImage(images[1]);
 		setCheckRockMessage('❌');
 		setCheckPaperMessage('✅');
 		setCheckScissorsMessage('❌');
@@ -55,7 +56,7 @@ export default function App() {
 	};
 
 	const handleScissorsSelected = () => {
-		setPlayerImage(images[3]);
+		setPlayerImage(images[2]);
 		setCheckRockMessage('❌');
 		setCheckPaperMessage('❌');
 		setCheckScissorsMessage('✅');
@@ -72,52 +73,60 @@ export default function App() {
 		console.log('computerImage', computerImage);
 		setShowResultImage(computerImage);
 
-		// La pierre gagne contre le ciseaux et perd contre la feuille
-		if (playerImage == 1) {
-			// PIERRE vs FEUILLE
-			if (computerImage == 2) {
-				setComputerScore(computerScore + 1);
-			}
-			// PIERRE vs CISEAUX
-			if (computerImage == 3) {
-				setPlayerScore(playerScore + 1);
-			}
-			// PIERRE vs PIERRE
-			if (computerImage == 1) {
-				setCounterDrawing(counterDrawing + 1);
-			}
+		setManche(manche + 1);
+
+		// PLAYER WIN
+		// PIERRE vs CISEAUX
+		if (playerImage == 1 && computerImage == 3) {
+			setPlayerScore(playerScore + 1);
 		}
 
-		// La feuille gagne contre la pierre et perd contre le ciseaux
-		if (playerImage == 2) {
-			// FEUILLE vs CISEAUX
-			if (computerImage == 3) {
-				setComputerScore(computerScore + 1);
-			}
-			// FEUILLE vs PIERRE
-			if (computerImage == 1) {
-				setPlayerScore(playerScore + 1);
-			}
-			// FEUILLE vs FEUILLE
-			if (computerImage == 2) {
-				setCounterDrawing(counterDrawing + 1);
-			}
+		// PLAYER WIN
+		// FEUILLE vs PIERRE
+		if (playerImage == 2 && computerImage == 1) {
+			setPlayerScore(playerScore + 1);
 		}
 
-		// Le ciseaux gagne contre la feuille et perd contre la pierre
-		if (playerImage == 3) {
-			// CISEAUX vs PIERRE
-			if (computerImage == 1) {
-				setComputerScore(computerScore + 1);
-			}
-			// CISEAUX vs FEUILLE
-			if (computerImage == 2) {
-				setPlayerScore(playerScore + 1);
-			}
-			// CISEAUX vs CISEAUX
-			if (computerImage == 3) {
-				setCounterDrawing(counterDrawing + 1);
-			}
+		// PLAYER WIN
+		// CISEAUX vs FEUILLE
+		if (playerImage == 3 && computerImage == 2) {
+			setPlayerScore(playerScore + 1);
+		}
+
+		// COMPUTER WIN
+		// PIERRE vs FEUILLE
+		if (playerImage == 1 && computerImage == 2) {
+			setComputerScore(computerScore + 1);
+		}
+
+		// COMPUTER WIN
+		// FEUILLE vs CISEAUX
+		if (playerImage == 2 && computerImage == 3) {
+			setComputerScore(computerScore + 1);
+		}
+
+		// COMPUTER WIN
+		// CISEAUX vs PIERRE
+		if (playerImage == 3 && computerImage == 1) {
+			setComputerScore(computerScore + 1);
+		}
+
+		// MATCH NUL
+		// PIERRE vs PIERRE
+		if (playerImage == 1 && computerImage == 1) {
+			setCounterDrawing(counterDrawing + 1);
+		}
+
+		// MATCH NUL
+		// FEUILLE vs FEUILLE
+		if (playerImage == 2 && computerImage == 2) {
+			setCounterDrawing(counterDrawing + 1);
+		}
+
+		// MATCH NUL
+		// CISEAUX vs CISEAUX
+		if (playerImage == 3 && computerImage == 3) {
+			setCounterDrawing(counterDrawing + 1);
 		}
 
 		console.log('\n-------------------------------------------------');
@@ -145,6 +154,7 @@ export default function App() {
 		setCheckPaperMessage('❌');
 		setCheckScissorsMessage('❌');
 		setShowResultImage(image);
+		setManche(0);
 	};
 
 	return (
@@ -236,7 +246,7 @@ export default function App() {
 						fontWeight: 'bold',
 					}}
 				>
-					Match nul : {counterDrawing}
+					Manche : {manche}
 				</Text>
 				<Image
 					source={showResultImage}
